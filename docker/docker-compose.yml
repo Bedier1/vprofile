@@ -26,7 +26,7 @@ services:
     volumes:
       - vproappdata:/usr/local/tomcat/webapps
   vproweb:
-    image: mohamedbedier/vprofile_web:v1
+    image: mohamedbedier/vprofile_nginx:v1
     ports: 
       - '80:80'
   
