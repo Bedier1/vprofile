@@ -5,13 +5,14 @@ pipeline {
         DOCKER_REPO = 'mohamedbedier/vprofile_app'
         KUBECONFIG = credentials('minikube')
     }
+    /*
     stages {
             stage ("Fetch code") {
             steps {
                 git  branch: 'main', url: 'https://github.com/Bedier1/vprofile'
             }
         }
-
+*/
 
         stage("build-image") {
             steps {
