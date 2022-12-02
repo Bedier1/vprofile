@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  vprodb
+  namespace: default
+  labels:
+    app: vprodb
+spec:
+  selector:
+    matchLabels:
+      app: vprodb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app:  vprodb
+    spec:
+      containers:
+      - name:  vprodb
+          #mohamedbedier/vprofile_db:v1
+        image: vprofile/vprofiledb:V1
+        livenessProbe:
+          tcpSocket:
+            port: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: db-pass
+        ports:
+        - containerPort:  3306
+          name:  dbport  
+        volumeMounts:
+        - name: dbdata
+          mountPath: /var/lib/mysql
+      volumes:
+        - name: dbdata
+          hostPath:
+            path: /var/lib/mysql/test
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vprodb
+  namespace: default
+spec:
+  selector:
+    app: vprodb
+  type: ClusterIP
+  ports:
+  - name: db
+    protocol: TCP
+    port: 3306
+    targetPort: 3306
