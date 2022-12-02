@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  vproapp
+  namespace: default
+  labels:
+    app: vproapp
+spec:
+  selector:
+    matchLabels:
+      app: vproapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app:  vproapp
+    spec:
+      initContainers:
+        - name: init-mydb
+          image: busybox
+          command: ['sh','-c', 'until nslookup vprodb; do echo waiting for mydb; sleep2; done;']
+      containers:
+        - name:  vproapp
+          image:  mohamedbedier/vprofile_app:v1
+          env:
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: db-pass
+          ports:
+          - containerPort:  8080
+      restartPolicy: Always
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vproapp
+  namespace: default
+spec:
+  selector:
+    app: vproapp
+  type: NodePort
+  ports:
+  - name: db
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+    nodePort: 30010
+
