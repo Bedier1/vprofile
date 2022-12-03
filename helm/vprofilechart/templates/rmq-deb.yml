@@ -16,8 +16,8 @@ spec:
         app:  vpromq01
     spec:
       containers:
-      - name:  vpromq01
-        image:  memcached
+      - name: vpromq01
+        image: memcached
         livenessProbe:
           tcpSocket:
             port: 11211

@@ -1,3 +1,3 @@
-image:
-  version: mohamedbedier/vprofile_app:v1
-     {{ Values.image.version }}
+Image:
+  Version: mohamedbedier/vprofile_app:v1
+    

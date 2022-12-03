@@ -21,7 +21,7 @@ spec:
           command: ['sh','-c', 'until nslookup vprodb; do echo waiting for mydb; sleep2; done;']
       containers:
         - name:  vproapp
-          image: {{ Values.image.version }}
+          image: {{ Values.Image.Version }}
           env:
           - name: DB_HOST
             valueFrom:
